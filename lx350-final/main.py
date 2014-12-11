@@ -40,7 +40,6 @@ class Mainpage(webapp2.RequestHandler):
 		self.users = users
 		self.posts = Question.all().order('-create_time')
 		for post in self.posts:
-#			post.render_text = post.body[:500].replace('\n', '<br>') + ' ... (more) ...'
 			post.render()
 			post.put()
 		time.sleep(0.1)
@@ -69,20 +68,21 @@ class ViewQuestion(webapp2.RequestHandler):
 		self.user = users.get_current_user()
 		self.users = users
 		
-		self.response.write(render_str('header_template.html', p = self))
+		self.question=Question.get_by_id(int(question_id))
+		self.question.render(True)
+		self.question.put()
+		time.sleep(0.1)
 
-		question=Question.get_by_id(int(question_id))
-		self.response.write(question.render(True, question_id))
+		self.answers=db.GqlQuery('select * from Answer where question_id = :1 order by answervote desc', question_id)
+		for answer in self.answers:
+			answer.render()
+			answer.put()
+		time.sleep(0.1)
 
-		answers=db.GqlQuery('select * from Answer where question_id = :1 order by answervote desc', question_id)
-		for answer in answers:
-			self.response.write(answer.answervote)
-			self.response.write(answer.render())
-		'''
-		self.parent=question_id
-		if self.user:
-			self.response.write(render_str('question_control.html', p = self))
-		'''
+		self.question_id=question_id
+
+		self.response.write(render_str('viewquestion.html', p = self))
+
 
 
 class Question(db.Model):
@@ -96,7 +96,7 @@ class Question(db.Model):
 	render_text = db.TextProperty()
 	is_editable = db.BooleanProperty()
 
-	def render(self, render_full_text=False, question_id=None):
+	def render(self, render_full_text=False):
 		if len(self.body) > 500 and not render_full_text:
 			self.render_text = self.body[:500].replace('\n', '<br>') + ' ... (more) ...'
 		else:
@@ -185,12 +185,11 @@ class Answer(db.Model):
 	last_modified = db.DateTimeProperty(auto_now = True)
 	has_modified = db.BooleanProperty()
 	answervote = db.IntegerProperty()
+	render_text = db.TextProperty()
+	is_editable = db.BooleanProperty()
 
-	def render(self, render_full_text=False):
-		if len(self.body) > 500 and not render_full_text:
-			self.render_text = self.body[:500].replace('\n', '<br>') + ' ... (more) ...'
-		else:
-			self.render_text = self.body.replace('\n', '<br>')
+	def render(self):
+		self.render_text = self.body.replace('\n', '<br>')
 
 		
 		http = r'(https?://\w[^ \t<]*)'
@@ -206,21 +205,12 @@ class Answer(db.Model):
 		        self.render_text = re.sub(r'({0})'.format(link), r'<a href="\1"><img src="\1" alt="Image"></a>', self.render_text)
 		    else:
 		        self.render_text = re.sub(r'({0})'.format(link), r'<a href="\1"> \1 </a>', self.render_text)            
-		'''
-		aid = str(self.key().id())
-		votes = db.GqlQuery('select * from AnswerVote where question_id = :1 and answer_id = :2', self.question_id, aid)
-		answervote = 0
-		for vote in votes:
-			answervote = answervote+vote.vote
-		self.answervote=answervote
-		'''
 
-		self.cuser = users.get_current_user()
 
-		if not render_full_text:
-			self.show_permalink = True
 		if self.user == users.get_current_user():
 			self.is_editable = True
+		else:
+			self.is_editable = False
 #		return render_str('answer_template.html', p = self)
 
 	def refresh(self, question_id, answer_id):

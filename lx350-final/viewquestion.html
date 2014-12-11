@@ -1,0 +1,74 @@
+{% extends "bootstrap_base.html" %}
+
+    
+    {% block title %}
+    <title>View Question</title>
+    {% endblock title%}
+    {%block posts%}
+
+                <div class="col-md-1">
+                    {% if p.user %}
+                    <a href="/{{p.question.key().id()}}/vote?action=up">
+                    <button class="btn btn-xs btn-info" style="width:40px">Up</button></a>
+                    {% endif %}
+                        &nbsp;&nbsp;&nbsp;&nbsp;{{ p.question.questionvote }}
+                    {% if p.user %}
+                    <a href="/{{p.question.key().id()}}/vote?action=down">
+                    <button type="button" class="btn btn-xs btn-default" style="width:40px">Down</button></a>
+                    {% endif %}
+                </div>
+                <div class="col-md-11 blog-post"> 
+                    <p><b>
+                        {% autoescape true %} 
+                        {{ p.question.render_text | safe }}                        
+                        {% endautoescape %}
+                    </b>
+                        <br>
+                        {% if p.question.is_editable %}
+                        <a href="/{{p.question.key().id()}}/edit"><button type="button" class="btn btn-sm btn-primary">Edit</button></a>
+                        {% endif %}
+                    </p>
+                    <p class="blog-post-meta">
+                        Created at {{p.question.create_time.strftime('%I:%M %p, %b %d, %Y')}} by <a href="/{{p.question.user.nickname()}}"> {{p.question.user.nickname()}} </a>
+                        {% if p.question.has_modified %}
+                        Last modified at {{p.question.last_modified.strftime('%I:%M %p, %b %d, %Y')}}
+                        {% endif %}
+                    </p>                    
+                <hr>
+                </div>
+        {% if p.answers %}
+            <div><b>Answer</b><br><br></div>
+            {% for post in p.answers%}
+                <div class="col-md-1">
+                    {% if p.user %}
+                    <a href="/{{p.question_id}}/{{post.key().id()}}/vote?action=up">
+                    <button class="btn btn-xs btn-info" style="width:40px">Up</button></a>
+                    {% endif %}
+                        &nbsp;&nbsp;&nbsp;&nbsp;{{ post.answervote }}
+                    {% if p.user %}
+                    <a href="/{{p.question_id}}/{{post.key().id()}}/vote?action=down">
+                    <button type="button" class="btn btn-xs btn-default" style="width:40px">Down</button></a>
+                    {% endif %}
+                </div>
+                <div class="col-md-11 blog-post"> 
+                    <p>            
+                        {% autoescape true %} 
+                        {{ post.render_text | safe }}                        
+                        {% endautoescape %} 
+                        <br>
+                        {% if post.is_editable %}
+                        <a href="/{{p.question_id}}/{{post.key().id()}}/edit"><button type="button" class="btn btn-sm btn-primary">Edit</button></a>
+                        {% endif %}
+                    </p>
+                    <p class="blog-post-meta">
+                        Created at {{post.create_time.strftime('%I:%M %p, %b %d, %Y')}} by <a href="/{{post.user.nickname()}}"> {{post.user.nickname()}} </a>
+                        {% if post.has_modified %}
+                        Last modified at {{post.last_modified.strftime('%I:%M %p, %b %d, %Y')}}
+                        {% endif %}
+                    </p>                    
+                <hr>
+                </div>  
+            {%endfor%}
+        {% endif %}
+        <div><b>Your Answer</b></div>
+    {%endblock posts%}
