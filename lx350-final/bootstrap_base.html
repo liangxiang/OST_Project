@@ -52,8 +52,12 @@
             </ul>
 
              <ul class="nav navbar-nav navbar-right">
-                <li class="navbar-brand">Welcome, {{ p.user }}
-                <button class="btn btn-success">Log out</button></li>
+              {% if p.user %}
+                <li class="navbar-brand">Welcome, {{ p.user }}</li>
+                <li class="navbar-right"><a href={{p.users.create_logout_url('/')}}><button class="btn btn-success">Log out</button></a></li>
+              {% else %}
+                <li class="navbar-right"><a href={{p.users.create_login_url(p.request.uri) }}><button class="btn btn-success">Log in</button></a></li>
+              {% endif %}
             </ul> <!-- nav navbar -->
         </div><!-- /.nav-collapse -->
       </div><!-- /.container -->
@@ -63,14 +67,15 @@
     {% block content %}
     <div class="container">
 
-      <div class="blog-header">
+      <div class="blog-header col-sm-8">
        {%block header%}
         <br>
         <h1 class="blog-title">OST Question System</h1>
         <p class="lead blog-description">Open source tools' final project of Liang Xiang</p>
        {%endblock header%}
       </div>
-
+      {%block create%}
+      {%endblock%}
       
       <div class="row">
 

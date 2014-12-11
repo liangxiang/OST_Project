@@ -94,6 +94,7 @@ class Question(db.Model):
 	has_modified = db.BooleanProperty()
 	questionvote = db.IntegerProperty()
 	render_text = db.TextProperty()
+	is_editable = db.BooleanProperty()
 
 	def render(self, render_full_text=False, question_id=None):
 		if len(self.body) > 500 and not render_full_text:
@@ -114,12 +115,16 @@ class Question(db.Model):
 		    if img.search(link) or local_img.search(link):
 		        self.render_text = re.sub(r'({0})'.format(link), r'<a href="\1"><img src="\1" alt="Image"></a>', self.render_text)
 		    else:
-		        self.render_text = re.sub(r'({0})'.format(link), r'<a href="\1"> \1 </a>', self.render_text)            
+		        self.render_text = re.sub(r'({0})'.format(link), r'<a href="\1"> \1 </a>', self.render_text)
+
+		if self.user == users.get_current_user():
+			self.is_editable = True
+		else:
+			self.is_editable = False
 
 		if not render_full_text:
 			self.show_permalink = True
-		if self.user == users.get_current_user():
-			self.is_editable = True
+
 #		return render_str('blog_post_template.html', p = self)
 
 	def refresh(self, question_id):
@@ -142,7 +147,9 @@ class QuestionEdit(webapp2.RequestHandler):
 		else:
 			class p: pass
 			p.body_str = ''
-		return render_str('blog_edit_template.html', p=p)
+		p.user = users.get_current_user()
+		p.users = users
+		return render_str('createquestion.html', p=p)
 
 class NewQuestion(QuestionEdit):
 	def get(self):

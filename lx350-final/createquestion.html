@@ -1,0 +1,29 @@
+{% extends "bootstrap_base.html" %}
+    {% block title %}
+    <title>Create a new question</title>
+    {% endblock title%}
+    {%block posts%}
+        {% if p.user %}
+        <div class="blog-post"> 
+            <h2 class="blog-post-title">Create a new question</h2>
+            {% if not p.key %}
+              <form action="/post" role="form" method="post" style="padding: 15px;min-width: 250px;" >
+            {% else %}
+              <form action="/{{p.key().id()}}/post" role="form" method="post" style="padding: 15px;min-width: 250px;" >
+            {% endif %}
+                <div class="text-left" style="padding: 15px;max-width: 600px;"> 
+                    What is your question:
+                    <br><textarea name="body" class="form-control" required autofocus rows="20">{{p.body_str}}</textarea><br>
+                    
+                    Tags: (separated by space)
+                    <br><input type=text name="tags" class="form-control" value="{{' '.join(p.tags)}}"></textarea><br>
+{#
+                    Image URL:
+                    <br><textarea name="image" class="form-control" autofocus></textarea><br>
+#}
+                    <button class="btn btn-success" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+    {%endblock posts%}
