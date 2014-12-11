@@ -5,7 +5,6 @@
     <title>View Question</title>
     {% endblock title%}
     {%block posts%}
-
                 <div class="col-md-1">
                     {% if p.user %}
                     <a href="/{{p.question.key().id()}}/vote?action=up">
@@ -36,7 +35,7 @@
                     </p>                    
                 <hr>
                 </div>
-        {% if p.answers %}
+        {% if p.viewanswer %}
             <div><b>Answer</b><br><br></div>
             {% for post in p.answers%}
                 <div class="col-md-1">
@@ -70,5 +69,22 @@
                 </div>  
             {%endfor%}
         {% endif %}
+    {% if p.user %}    
         <div><b>Your Answer</b></div>
+        <div class="blog-post">
+              <form action="/{{p.question_id}}/answerpost" role="form" method="post" style="padding: 15px;min-width: 250px;" >
+                <div class="text-left" style="padding: 15px;max-width: 600px;"> 
+                    <textarea name="body" class="form-control" required rows="5"></textarea><br>
+                    <button class="btn btn-success" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
     {%endblock posts%}
+    {%block create%}
+        {% if p.user %}
+          <div class="blog-header col-sm-2 col-sm-offset-1">
+            <p class="blog-createquestion"><a href="/{{p.question_id}}/createanswer"><button type="button" class="btn btn-primary">Create a new answer</button></a></p>
+          </div>
+        {% endif %}
+    {%endblock%}

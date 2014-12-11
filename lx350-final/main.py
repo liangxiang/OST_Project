@@ -5,6 +5,7 @@ import urllib
 import re
 import cgi
 import time
+import datetime
 
 from google.appengine.ext import db
 from google.appengine.api import memcache
@@ -78,6 +79,10 @@ class ViewQuestion(webapp2.RequestHandler):
 			answer.render()
 			answer.put()
 		time.sleep(0.1)
+		if self.answers.count() == 0:
+			self.viewanswer=False
+		else:
+			self.viewanswer=True
 
 		self.question_id=question_id
 
@@ -90,7 +95,7 @@ class Question(db.Model):
 	body = db.TextProperty()
 	tags = db.StringListProperty()
 	create_time = db.DateTimeProperty(auto_now_add = True)
-	last_modified = db.DateTimeProperty(auto_now = True)
+	last_modified = db.DateTimeProperty()
 	has_modified = db.BooleanProperty()
 	questionvote = db.IntegerProperty()
 	render_text = db.TextProperty()
@@ -170,6 +175,8 @@ class QuestionEntry(webapp2.RequestHandler):
 		post.tags = self.request.get('tags').split()
 		post.questionvote = 0
 
+		date = datetime.datetime.now(EST())
+		post.last_modified = date
 		key = post.put()
 
 		# memcache.delete(KEY)
@@ -182,16 +189,16 @@ class Answer(db.Model):
 	question_id = db.StringProperty()
 	body = db.TextProperty()
 	create_time = db.DateTimeProperty(auto_now_add = True)
-	last_modified = db.DateTimeProperty(auto_now = True)
+	last_modified = db.DateTimeProperty()
 	has_modified = db.BooleanProperty()
 	answervote = db.IntegerProperty()
 	render_text = db.TextProperty()
 	is_editable = db.BooleanProperty()
 
 	def render(self):
+		
 		self.render_text = self.body.replace('\n', '<br>')
 
-		
 		http = r'(https?://\w[^ \t<]*)'
 		img_pattern = r'\.(png|jpg|gif)$'
 		img = re.compile(img_pattern)
@@ -240,13 +247,14 @@ class AnswerEdit(webapp2.RequestHandler):
 	def render(self, question_id, p=None):
 		if p:
 			p.body_str = p.body
-			p.parent=question_id
 		else:
 			class p: pass
 			p.body_str = ''
-			p.parent=question_id
-
-		return render_str('answer_edit_template.html', p=p)
+		
+		p.parent=question_id
+		p.user = users.get_current_user()
+		p.users = users
+		return render_str('createanswer.html', p=p)
 
 class NewAnswer(AnswerEdit):
 	def get(self, question_id):
@@ -266,6 +274,8 @@ class AnswerEntry(webapp2.RequestHandler):
 		post.body = self.request.get('body')
 		post.question_id=question_id
 		post.answervote=0
+		date = datetime.datetime.now(EST())
+		post.last_modified = date
 
 		key = post.put()
 
@@ -333,9 +343,15 @@ class VoteAnswer(webapp2.RequestHandler):
 		answer.put()
 
 
-		time.sleep(0.1)
+		time.sleep(0.2)
 		self.redirect('/'+question_id)
 
+class EST(datetime.tzinfo):
+    def utcoffset(self, dt):
+      return datetime.timedelta(hours=0)
+
+    def dst(self, dt):
+        return datetime.timedelta(0)
 		
 
 app = webapp2.WSGIApplication([
