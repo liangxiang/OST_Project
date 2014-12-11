@@ -116,11 +116,6 @@ class Question(db.Model):
 		    else:
 		        self.render_text = re.sub(r'({0})'.format(link), r'<a href="\1"> \1 </a>', self.render_text)            
 
-		if question_id==None:
-			self.mainpage=True
-		else:
-			self.mainpage=False
-
 		if not render_full_text:
 			self.show_permalink = True
 		if self.user == users.get_current_user():
