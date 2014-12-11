@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    {% block title %}
+    <title>OST Question System</title>
+    {% endblock title%}
+
+    {% block css_file%}
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/css/bootstrap.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets/css/blog.css" rel="stylesheet">
+    {% endblock css_file%}
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <a name="Top"></a>
+  </head>
+
+  <body>
+    {%block nav%}
+    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation" >
+    <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/" id="brand">OST Question</a>
+        </div>
+
+      <div class="collapse navbar-collapse" >
+            <ul class="nav navbar-nav">
+                <li id="nav_0"><a href="/">Home</a></li>
+            </ul>
+
+             <ul class="nav navbar-nav navbar-right">
+                <li class="navbar-brand">Welcome, {{ p.user }}
+                <button class="btn btn-success">Log out</button></li>
+            </ul> <!-- nav navbar -->
+        </div><!-- /.nav-collapse -->
+      </div><!-- /.container -->
+</nav>
+    {%endblock nav%}
+
+    {% block content %}
+    <div class="container">
+
+      <div class="blog-header">
+       {%block header%}
+        <br>
+        <h1 class="blog-title">OST Question System</h1>
+        <p class="lead blog-description">Open source tools' final project of Liang Xiang</p>
+       {%endblock header%}
+      </div>
+
+      
+      <div class="row">
+
+        {%block blog_main%}
+        <div class="col-sm-8 blog-main">
+          {%block posts%}
+
+          {%endblock posts%}
+
+          {%block pager%}
+
+          {%endblock pager%}
+
+        </div><!-- /.blog-main -->
+        {%endblock blog_main%}
+
+        {%block sidebar%}
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h4>About</h4>
+            <p>The question system is Liang Xiang's final project of Open Source Tools class. Please feel free to log in by google account. </p>
+          </div>
+          <div class="sidebar-module">
+          {%block tags%}
+            
+          {%endblock tags%}
+          </div>
+
+          <div class="sidebar-module">
+          {%block blogs%}
+            
+          {%endblock blogs%}
+          </div>
+
+        </div><!-- /.blog-sidebar -->
+      {%endblock sidebar%}
+
+      </div><!-- /.row -->
+
+    </div><!-- /.container -->
+    {% endblock content%}
+
+    {%block footer%}
+    <div class="blog-footer">
+      <footer>
+        <p>&copy; <a href="#"> Liang Xiang</a>, 2014</p>
+      </footer>
+        <a href="#">Back to top</a>
+      </p>
+    </div>
+    {%endblock footer%}
+
+
+    {%block script_load%}
+    <!-- Bootstrap core JavaScript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/stylesheets/js/bootstrap.min.js"></script>
+
+    
+    {%block script%}
+
+    {%endblock script%}
+
+    {%endblock script_load%}
+
+  </body>
+
+</html>

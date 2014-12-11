@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+{% autoescape true %}
+
+<h1> Create a new answer </h1>
+{% if not p.key %}
+  <form action="/{{p.parent}}/answerpost" method=post>
+{% else %}
+  <form action="/{{p.parent}}/{{p.key().id()}}/answerpost" method=post>
+{% endif %}
+  <br>What is your answer:
+  <br><textarea name=body rows=30 cols=80>{{p.body_str}}</textarea>
+	
+  <br>
+	<input type=submit value="Submit">
+	</form>
+
+<hr>
+
+{% endautoescape %}
