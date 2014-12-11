@@ -115,16 +115,7 @@ class Question(db.Model):
 		        self.render_text = re.sub(r'({0})'.format(link), r'<a href="\1"><img src="\1" alt="Image"></a>', self.render_text)
 		    else:
 		        self.render_text = re.sub(r'({0})'.format(link), r'<a href="\1"> \1 </a>', self.render_text)            
-		'''
-		qid = str(self.key().id())
-		votes = db.GqlQuery('select * from QuestionVote where question_id = :1', qid)
-		questionvote = 0
-		for value in votes:
-			questionvote = questionvote+value.vote
 
-		self.questionvote=questionvote
-		self.cuser = users.get_current_user()
-		'''
 		if question_id==None:
 			self.mainpage=True
 		else:
