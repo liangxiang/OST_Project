@@ -9,6 +9,7 @@ import datetime
 
 from google.appengine.ext import db
 from google.appengine.api import memcache
+from google.appengine.api import images
 from google.appengine.api import users
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
@@ -45,24 +46,11 @@ class Mainpage(webapp2.RequestHandler):
 			post.put()
 		time.sleep(0.1)
 
+		self.tags = sorted(set([j for i in self.posts for j in i.tags]))
+
 		self.response.write(render_str('index.html', p = self))
 
 
-		'''
-		self.response.write(render_str('header_template.html', p = self))
-		fetch = self.request.get('fetch')
-		if not fetch:
-			fetch = 0
-		fetch = int(fetch)
-		self.query['fetch'] = int(fetch)
-
-		posts = Question.all().order('-create_time')
-
-		for post in posts:
-			self.response.write(post.render())
-		if self.user:
-			self.response.write(render_str('blog_control.html', p = self))
-		'''
 
 class ViewQuestion(webapp2.RequestHandler):
 	def get(self, question_id):
@@ -93,6 +81,7 @@ class ViewQuestion(webapp2.RequestHandler):
 class Question(db.Model):
 	user = db.UserProperty()
 	body = db.TextProperty()
+	avatar = db.BlobProperty()
 	tags = db.StringListProperty()
 	create_time = db.DateTimeProperty(auto_now_add = True)
 	last_modified = db.DateTimeProperty()
@@ -173,6 +162,8 @@ class QuestionEntry(webapp2.RequestHandler):
 
 		post.body = self.request.get('body')
 		post.tags = self.request.get('tags').split()
+#		avatar = images.resize(self.request.get('img'), 32, 32)
+#		post.avatar = db.Blob(avatar)
 		post.questionvote = 0
 
 		date = datetime.datetime.now(EST())

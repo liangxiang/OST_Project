@@ -54,9 +54,9 @@
              <ul class="nav navbar-nav navbar-right">
               {% if p.user %}
                 <li class="navbar-brand">Welcome, {{ p.user }}</li>
-                <li class="navbar-right"><a href={{p.users.create_logout_url('/')}}><button class="btn btn-success">Log out</button></a></li>
+                <li style="margin-top:-8px"><a href={{p.users.create_logout_url('/')}}><button class="btn btn-success">Log out</button></a></li>
               {% else %}
-                <li class="navbar-right"><a href={{p.users.create_login_url(p.request.uri) }}><button class="btn btn-success">Log in</button></a></li>
+                <li style="margin-top:-8px"><a href={{p.users.create_login_url(p.request.uri) }}><button class="btn btn-success">Log in</button></a></li>
               {% endif %}
             </ul> <!-- nav navbar -->
         </div><!-- /.nav-collapse -->

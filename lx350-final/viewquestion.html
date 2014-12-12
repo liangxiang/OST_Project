@@ -55,6 +55,9 @@
                         {{ post.render_text | safe }}                        
                         {% endautoescape %} 
                         <br>
+                        {% if post.avatar %}
+                        <div><img src="/img?img_id={{ post.key() }}"></img>
+                        {% endif %}
                         {% if post.is_editable %}
                         <a href="/{{p.question_id}}/{{post.key().id()}}/edit"><button type="button" class="btn btn-sm btn-primary">Edit</button></a>
                         {% endif %}

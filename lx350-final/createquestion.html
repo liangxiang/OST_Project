@@ -7,9 +7,9 @@
         <div class="blog-post"> 
             <h2 class="blog-post-title">Create a new question</h2>
             {% if not p.key %}
-              <form action="/post" role="form" method="post" style="padding: 15px;min-width: 250px;" >
+              <form action="/post" enctype="multipart/form-data" method="post" style="padding: 15px;min-width: 250px;" >
             {% else %}
-              <form action="/{{p.key().id()}}/post" role="form" method="post" style="padding: 15px;min-width: 250px;" >
+              <form action="/{{p.key().id()}}/post" enctype="multipart/form-data" method="post" style="padding: 15px;min-width: 250px;" >
             {% endif %}
                 <div class="text-left" style="padding: 15px;max-width: 600px;"> 
                     What is your question?
@@ -17,10 +17,10 @@
                     
                     Tags: (separated by space)
                     <br><input type=text name="tags" class="form-control" value="{{' '.join(p.tags)}}"></textarea><br>
-{#
-                    Image URL:
-                    <br><textarea name="image" class="form-control" autofocus></textarea><br>
-#}
+
+                    Upload Image:
+                    <br><input type="file" name="img" class="form-control"/><br>
+
                     <button class="btn btn-success" type="submit">Submit</button>
                 </div>
             </form>
