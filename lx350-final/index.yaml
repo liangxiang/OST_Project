@@ -22,6 +22,18 @@ indexes:
   - name: question_id
   - name: vote
 
+- kind: Question
+  properties:
+  - name: tags
+  - name: create_time
+    direction: desc
+
+- kind: Question
+  properties:
+  - name: user
+  - name: create_time
+    direction: desc
+
 - kind: QuestionVote
   properties:
   - name: question_id

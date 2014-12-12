@@ -35,7 +35,7 @@
                         {% endif %}
                     </p>
                     <p class="blog-post-meta">
-                        Created at {{post.create_time.strftime('%I:%M %p, %b %d, %Y')}} by <a href="/{{post.user.nickname()}}"> {{post.user.nickname()}} </a>
+                        Created at {{post.create_time.strftime('%I:%M %p, %b %d, %Y')}} by <a href="/index?user={{post.user}}"> {{post.user.nickname()}} </a>
                         {% if post.has_modified %}
                         Last modified at {{post.last_modified.strftime('%I:%M %p, %b %d, %Y')}}
                         {% endif %}
@@ -52,23 +52,22 @@
           </div>
         {% endif %}
     {%endblock%}
-    {#
     {%block pager%}
     <ul class="pager">    
-        {% if posts.has_previous %}
-           <li> <a href="?page={{ posts.previous_page_number }}">previous</a></li>
+        {% if p.has_previous %}
+           <li> <a href="{{ p.previous_url }}">previous</a></li>
         {%else%}
            <li class="disabled"> <a>previous</a></li>
         {% endif %}
 
-        {% if posts.has_next %}
-            <li><a href="?page={{ posts.next_page_number }}">next</a></li>
+        {% if p.has_next %}
+            <li><a href="{{ p.next_url }}">next</a></li>
         {%else%}
             <li class="disabled"> <a>next</a></li>
         {% endif %}
     </ul>
     {%endblock pager%}
-    
+    {#
     {%block blogs%}
         <h4>Blogs</h4>
         <ol class="list-unstyled">

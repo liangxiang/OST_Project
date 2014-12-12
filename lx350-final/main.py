@@ -36,20 +36,59 @@ def is_owner(user):
 
 class Mainpage(webapp2.RequestHandler):
 	def get(self):        
-		self.query = {}
+		query = {}
 		self.user = users.get_current_user()
 
 		self.users = users
 		self.posts = Question.all().order('-create_time')
-		for post in self.posts:
+
+		self.tags = sorted(set([j for i in self.posts for j in i.tags]))
+		search_tag = self.request.get('tag')
+		if search_tag:
+			query['tag']=search_tag
+			self.posts.filter('tags', search_tag)
+
+		username = self.request.get('user')		
+		if username:
+			query['user']=username
+			username = users.User(username)
+			self.posts.filter('user', username)
+
+		url='/index?'
+		for (k,q) in query.items():
+			url=url+'{0}={1}'.format(k, q)+'&'
+
+		page = self.request.get('page')
+		if not page:
+			page = 0
+			self.has_previous=False
+		else:
+			page = int(page)
+			self.has_previous=True
+
+		if page==1:
+			self.previous_url=url.strip('&')
+		else:
+			self.previous_url=url+'page='+str(page-1)
+
+		if page*10+10>self.posts.count():
+			self.has_next=False
+			self.next_url=url.strip('&')
+		else:
+			self.has_next=True
+			self.next_url=url+'page='+str(page+1)
+
+
+
+		self.posts=self.posts[page*10:(page*10+10)]
+		for post in self.posts:		
 			post.render()
 			post.put()
 		time.sleep(0.1)
 
-		self.tags = sorted(set([j for i in self.posts for j in i.tags]))
 
 		self.response.write(render_str('index.html', p = self))
-
+		
 
 
 class ViewQuestion(webapp2.RequestHandler):
