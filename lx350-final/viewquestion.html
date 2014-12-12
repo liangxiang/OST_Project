@@ -22,6 +22,14 @@
                         {{ p.question.render_text | safe }}                        
                         {% endautoescape %}
                     </b>
+                        {% if p.question.avatar %}
+                        <br>
+                        <div><img src="/img?img_id={{ p.quesstion.key() }}"></img>
+                        {% endif %}
+                        <br>
+                        {% for tag in p.question.tags %}
+                        <a href="/index?tag={{tag}}"><button type="button" class="btn btn-sm btn-success"> {{tag}}</button></a>
+                        {% endfor %}                    
                         <br>
                         {% if p.question.is_editable %}
                         <a href="/{{p.question.key().id()}}/edit"><button type="button" class="btn btn-sm btn-primary">Edit</button></a>
@@ -55,9 +63,6 @@
                         {{ post.render_text | safe }}                        
                         {% endautoescape %} 
                         <br>
-                        {% if post.avatar %}
-                        <div><img src="/img?img_id={{ post.key() }}"></img>
-                        {% endif %}
                         {% if post.is_editable %}
                         <a href="/{{p.question_id}}/{{post.key().id()}}/edit"><button type="button" class="btn btn-sm btn-primary">Edit</button></a>
                         {% endif %}
@@ -91,3 +96,16 @@
           </div>
         {% endif %}
     {%endblock%}
+
+    {%block tags%}
+    <h4>Tags</h4>
+    <ol class="list-unstyled">
+        {%if p.question.tags%}
+            {%for tag in p.question.tags %}
+                <li><a href="/index?tag={{tag}}">{{ tag }}</a></li>
+            {%endfor%}
+        {%else %}
+            <li>There are no tags yet.</li>
+        {%endif%}
+    </ol>
+    {%endblock tags%}
