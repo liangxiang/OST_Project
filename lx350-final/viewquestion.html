@@ -7,13 +7,13 @@
     {%block posts%}
                 <div class="col-md-1">
                     {% if p.user %}
-                    <a href="/{{p.question.key().id()}}/vote?action=up">
-                    <button class="btn btn-xs btn-info" style="width:40px">Up</button></a>
+                    <a href="/{{p.question.key().id()}}/vote?action=up" class="vote-up-on">
+                    Up</a>
                     {% endif %}
                         &nbsp;&nbsp;&nbsp;&nbsp;{{ p.question.questionvote }}
                     {% if p.user %}
-                    <a href="/{{p.question.key().id()}}/vote?action=down">
-                    <button type="button" class="btn btn-xs btn-default" style="width:40px">Down</button></a>
+                    <a href="/{{p.question.key().id()}}/vote?action=down" class="vote-down-off">
+                    Down</a>
                     {% endif %}
                 </div>
                 <div class="col-md-11 blog-post"> 
@@ -28,7 +28,7 @@
                         {% endif %}
                         <br>
                         {% for tag in p.question.tags %}
-                        <a href="/index?tag={{tag}}"><button type="button" class="btn btn-sm btn-success"> {{tag}}</button></a>
+                        <a href="/index?tag={{tag}}" class="post-tag">{{tag}}</a>
                         {% endfor %}                    
                         <br>
                         {% if p.question.is_editable %}
@@ -48,13 +48,13 @@
             {% for post in p.answers%}
                 <div class="col-md-1">
                     {% if p.user %}
-                    <a href="/{{p.question_id}}/{{post.key().id()}}/vote?action=up">
+                    <a href="/{{p.question_id}}/{{post.key().id()}}/vote?action=up" class="vote-up-on">
                     <button class="btn btn-xs btn-info" style="width:40px">Up</button></a>
                     {% endif %}
                         &nbsp;&nbsp;&nbsp;&nbsp;{{ post.answervote }}
                     {% if p.user %}
-                    <a href="/{{p.question_id}}/{{post.key().id()}}/vote?action=down">
-                    <button type="button" class="btn btn-xs btn-default" style="width:40px">Down</button></a>
+                    <a href="/{{p.question_id}}/{{post.key().id()}}/vote?action=down" class="vote-down-off">
+                    Down</a>
                     {% endif %}
                 </div>
                 <div class="col-md-11 blog-post"> 
@@ -102,7 +102,7 @@
     <ol class="list-unstyled">
         {%if p.question.tags%}
             {%for tag in p.question.tags %}
-                <li><a href="/index?tag={{tag}}">{{ tag }}</a></li>
+                <li><a href="/index?tag={{tag}}" class="post-tag">{{ tag }}</a></li>
             {%endfor%}
         {%else %}
             <li>There are no tags yet.</li>

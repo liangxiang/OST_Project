@@ -48,8 +48,10 @@ class Mainpage(webapp2.RequestHandler):
 			query['tag']=search_tag
 			self.posts.filter('tags', search_tag)
 
-		username = self.request.get('user')		
+		username = self.request.get('user')
 		if username:
+			if username.find('@')==-1:
+				username=username+'@gmail.com'
 			query['user']=username
 			username = users.User(username)
 			self.posts.filter('user', username)
@@ -71,7 +73,7 @@ class Mainpage(webapp2.RequestHandler):
 		else:
 			self.previous_url=url+'page='+str(page-1)
 
-		if page*10+10>self.posts.count():
+		if page*10+10>=self.posts.count():
 			self.has_next=False
 			self.next_url=url.strip('&')
 		else:
