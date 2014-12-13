@@ -139,7 +139,7 @@ class Question(db.Model):
 
 		
 		http = r'(https?://\w[^ \t<]*)'
-		img_pattern = r'\.(png|jpg|gif)$'
+		img_pattern = r'\.(png|jpg|gif|jpeg|bmp)$'
 		img = re.compile(img_pattern)
 
 
@@ -203,8 +203,9 @@ class QuestionEntry(webapp2.RequestHandler):
 
 		post.body = self.request.get('body')
 		post.tags = self.request.get('tags').split()
-#		avatar = images.resize(self.request.get('img'), 32, 32)
-#		post.avatar = db.Blob(avatar)
+		avatar = self.request.get('img')
+		if avatar:
+			post.avatar = db.Blob(avatar)
 		post.questionvote = 0
 
 		date = datetime.datetime.now(EST())
@@ -232,7 +233,7 @@ class Answer(db.Model):
 		self.render_text = self.body.replace('\n', '<br>')
 
 		http = r'(https?://\w[^ \t<]*)'
-		img_pattern = r'\.(png|jpg|gif)$'
+		img_pattern = r'\.(png|jpg|gif|jpeg|bmp)$'
 		img = re.compile(img_pattern)
 
 
@@ -385,6 +386,15 @@ class EST(datetime.tzinfo):
     def dst(self, dt):
         return datetime.timedelta(0)
 
+class Image(webapp2.RequestHandler):
+    def get(self):
+        greeting = Question.get(self.request.get('img_id'))
+        if greeting.avatar:
+            self.response.headers['Content-Type'] = 'image/png'
+            self.response.out.write(greeting.avatar)
+        else:
+            self.response.out.write('No image')
+
 class RSS(webapp2.RequestHandler):
 	def get(self):
 		self.posts = Question.all().order('-create_time')
@@ -409,6 +419,7 @@ app = webapp2.WSGIApplication([
 	('/([0-9]+)/([0-9]+)/vote', VoteAnswer),
 	('/([0-9]+)/edit', QuestionEdit),
 	('/([0-9]+)/([0-9]+)/edit', AnswerEdit),
+	('/img', Image),
 	('/rss', RSS),
 
 ], debug=True)

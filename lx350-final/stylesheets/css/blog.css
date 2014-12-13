@@ -239,3 +239,12 @@ a.genu{background:url('/stylesheets/sprites.png')}
 .envelope-on,.envelope-off,.vote-up-off,.vote-up-on,.vote-down-off,.vote-down-on,.star-on,.star-off,.comment-up-off,.comment-up-on,.comment-flag,.edited-yes,.feed-icon,.vote-accepted-off,.vote-accepted-on,.vote-accepted-bounty,.badge-earned-check,.delete-tag,.grippie,.expander-arrow-hide,.expander-arrow-show,.expander-arrow-small-hide,.expander-arrow-small-show,.anonymous-gravatar,.badge1,.badge2,.badge3{background-image:url('/stylesheets/sprites.png');background-repeat:no-repeat;overflow:hidden}.envelope-off{width:20px;vertical-align:middle !ie7;margin-right:3px !ie7;font-size:500px !ie7;background-position:0 -803px;display:inline-block;height:14px}.envelope-on{width:20px;vertical-align:middle !ie7;margin-right:3px !ie7;font-size:500px !ie7;background-position:0 -803px;background-position:0 -783px;display:inline-block;height:14px}.vote-up-off,.vote-up-on,.vote-down-off,.vote-down-on,.star-on,.star-off{display:block;margin:0 auto;text-indent:-999em;background-position:-2px -263px;width:41px;height:25px}.vote-up-off,.vote-down-off,.vote-accepted-off,.star-off,.comment-up-off,.flag-off{cursor:pointer}.vote-up-off,.vote-up-on,.vote-down-off,.vote-down-on,.star-on,.star-off,.comment-up-off,.comment-up-on,.comment-flag,.flag-off,.vote-accepted-off,.vote-accepted-on{text-indent:-9999em;font-size:1px}
 .vote-up-on{background-position:-2px -230px}.vote-down-off{background-position:-2px -300px}.vote-down-on{background-position:-2px -331px}
 .vote-up-off{display:none}
+
+
+.photo{
+    width: 600px;
+    overflow: hidden;
+}
+.photo img{
+    max-width: 600px;  max-height: 600px; 
+}

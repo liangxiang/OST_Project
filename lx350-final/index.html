@@ -25,6 +25,11 @@
                         {{ post.render_text | safe }}                        
                         {% endautoescape %}
                         <br>
+                        {% if post.avatar %}
+                        <div class="photo">
+                        <img src="/img?img_id={{post.key()}}"></img>
+                        </div>
+                        {%endif%}
                         {% for tag in post.tags %}
                             <a href="/index?tag={{tag}}" class="post-tag">{{tag}}</a>
                         {% endfor %}
