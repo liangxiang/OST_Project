@@ -40,7 +40,14 @@ class Mainpage(webapp2.RequestHandler):
 		self.user = users.get_current_user()
 
 		self.users = users
-		self.posts = Question.all().order('-create_time')
+
+		option = self.request.get('option')
+		if option:
+			query['option']=option
+			option = '-'+option
+		else:
+			option='-create_time'
+		self.posts = Question.all().order(option)
 
 		self.tags = sorted(set([j for i in self.posts for j in i.tags]))
 		search_tag = self.request.get('tag')
@@ -88,7 +95,6 @@ class Mainpage(webapp2.RequestHandler):
 			post.put()
 		time.sleep(0.1)
 
-
 		self.response.write(render_str('index.html', p = self))
 		
 
@@ -130,6 +136,7 @@ class Question(db.Model):
 	questionvote = db.IntegerProperty()
 	render_text = db.TextProperty()
 	is_editable = db.BooleanProperty()
+	answernumber = db.IntegerProperty()
 
 	def render(self, render_full_text=False):
 		if len(self.body) > 500 and not render_full_text:
@@ -160,7 +167,7 @@ class Question(db.Model):
 		if not render_full_text:
 			self.show_permalink = True
 
-#		return render_str('blog_post_template.html', p = self)
+		self.answernumber = db.GqlQuery('select * from Answer where question_id = :1', str(self.key().id())).count()
 
 	def refresh(self, question_id):
 		votes = db.GqlQuery('select * from QuestionVote where question_id = :1', question_id)

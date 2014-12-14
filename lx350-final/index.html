@@ -5,6 +5,20 @@
     <title>Home page of OST Question</title>
     {% endblock title%}
     {%block posts%}
+        <div>
+            <div class='col-md-11'><b>Question:</b></div>
+            <div class='col-md-1'>
+                <div class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><button type="button" class="btn btn-sm btn-default">Sort by <span class="caret"></span></button></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="/index?option=create_time">create time</a></li>
+                    <li><a href="/index?option=last_modified">modified time</a></li>
+                    <li><a href="/index?option=questionvote">votes</a></li>
+                    <li><a href="/index?option=answernumber">answers</a></li>
+                  </ul>
+                </div>
+            </div>
+        </div>
         {% if p.posts %}
             {% for post in p.posts%}
                 <div class="col-md-1">
