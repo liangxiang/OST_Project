@@ -23,8 +23,9 @@
                         {% endautoescape %}
                     </b>
                         {% if p.question.avatar %}
-                        <br>
-                        <div><img src="/img?img_id={{ p.quesstion.key() }}"></img>
+                        <div class="photo">
+                        <img src="/img?img_id={{ p.question.key() }}"></img>
+                        </div>
                         {% endif %}
                         <br>
                         {% for tag in p.question.tags %}
