@@ -394,7 +394,7 @@ class Image(webapp2.RequestHandler):
             self.response.out.write(greeting.avatar)
         else:
             self.response.out.write('No image')
-
+'''
 class RSS(webapp2.RequestHandler):
 	def get(self):
 		self.posts = Question.all().order('-create_time')
@@ -403,7 +403,7 @@ class RSS(webapp2.RequestHandler):
 		self.users = users
 		self.response.headers['Content-Type'] = 'application/rss+xml'
 		self.response.write(render_str('rss.html', p=self))
-		
+'''		
 
 app = webapp2.WSGIApplication([
 	('/', Mainpage),
@@ -420,6 +420,6 @@ app = webapp2.WSGIApplication([
 	('/([0-9]+)/edit', QuestionEdit),
 	('/([0-9]+)/([0-9]+)/edit', AnswerEdit),
 	('/img', Image),
-	('/rss', RSS),
+#	('/rss', RSS),
 
 ], debug=True)
