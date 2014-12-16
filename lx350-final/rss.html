@@ -1,24 +1,20 @@
+<?xml version="1.0"?>
 <rss version="2.0">
     <channel>
         <title>OST Question System</title>
         <link href="lx350-final.appspot.com" rel="self"/>
         <updated>{{p.time.strftime('%I:%M %p, %b %d, %Y')}}</updated>
         <generator uri="lx350-final.appspot.com">liangxiang</generator>
-
-{% for entity in p.posts %}
-
+        {% for entity in p.posts %}
         <item>
-
-        <title><![CDATA[{{entity.body | truncate(20)}}]]></title>
-        <link href="http://{{entity.key().id()}}"/>
-        <id>{{entity.key().id()}}</id>
-        <updated>{{entity.last_modified.strftime('%I:%M %p, %b %d, %Y')}}</updated>
-        <author><name>{{entity.user.nickname()}}</name></author>
-        <published>{{entity.create_time.strftime('%I:%M %p, %b %d, %Y')}}</published>
-        <summary type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml">{{entity.body|safe}}</div>
-        </summary>
+            <title>{{entity.title}}</title>
+            <link href="http://lx350-final.appspot.com/{{entity.key().id()}}"/>
+            <id>{{entity.key().id()}}</id>
+            <updated>{{entity.last_modified.strftime('%I:%M %p, %b %d, %Y')}}</updated>
+            <author><name>{{entity.user.nickname()}}</name></author>
+            <published>{{entity.create_time.strftime('%I:%M %p, %b %d, %Y')}}</published>
+            <details>{{entity.body| truncate(100)}}</details>
         </item>
-
-{% endfor %}
+        {% endfor %}
     </channel>
 </rss>

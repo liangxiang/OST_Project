@@ -48,6 +48,7 @@ class Mainpage(webapp2.RequestHandler):
 		else:
 			option='-create_time'
 		self.posts = Question.all().order(option)
+		self.answers = Answer.all()
 
 		self.tags = sorted(set([j for i in self.posts for j in i.tags]))
 		search_tag = self.request.get('tag')
@@ -96,7 +97,6 @@ class Mainpage(webapp2.RequestHandler):
 		time.sleep(0.1)
 
 		self.response.write(render_str('index.html', p = self))
-		
 
 
 class ViewQuestion(webapp2.RequestHandler):
@@ -127,6 +127,7 @@ class ViewQuestion(webapp2.RequestHandler):
 
 class Question(db.Model):
 	user = db.UserProperty()
+	title = db.StringProperty()
 	body = db.TextProperty()
 	avatar = db.BlobProperty()
 	tags = db.StringListProperty()
@@ -208,6 +209,7 @@ class QuestionEntry(webapp2.RequestHandler):
 			post = Question.get_by_id(int(question_id))
 			post.has_modified = True
 
+		post.title = self.request.get('title')
 		post.body = self.request.get('body')
 		post.tags = self.request.get('tags').split()
 		avatar = self.request.get('img')
@@ -219,15 +221,15 @@ class QuestionEntry(webapp2.RequestHandler):
 		post.last_modified = date
 		key = post.put()
 
-		# memcache.delete(KEY)
-		#        self.redirect('/{0}'.format(key.id()))
 		time.sleep(0.1)
 		self.redirect('/')
 
 class Answer(db.Model):
 	user = db.UserProperty()
 	question_id = db.StringProperty()
+	title = db.StringProperty()
 	body = db.TextProperty()
+	avatar = db.BlobProperty()
 	create_time = db.DateTimeProperty(auto_now_add = True)
 	last_modified = db.DateTimeProperty()
 	has_modified = db.BooleanProperty()
@@ -258,7 +260,7 @@ class Answer(db.Model):
 			self.is_editable = True
 		else:
 			self.is_editable = False
-#		return render_str('answer_template.html', p = self)
+
 
 	def refresh(self, question_id, answer_id):
 		votes = db.GqlQuery('select * from AnswerVote where question_id = :1 and answer_id = :2', question_id, answer_id)
@@ -313,6 +315,9 @@ class AnswerEntry(webapp2.RequestHandler):
 
 		post.body = self.request.get('body')
 		post.question_id=question_id
+		avatar = self.request.get('img')
+		if avatar:
+			post.avatar = db.Blob(avatar)
 		post.answervote=0
 		date = datetime.datetime.now(EST())
 		post.last_modified = date
@@ -402,6 +407,15 @@ class Image(webapp2.RequestHandler):
         else:
             self.response.out.write('No image')
 
+class AnswerImage(webapp2.RequestHandler):
+    def get(self):
+        greeting = Answer.get(self.request.get('img_id'))
+        if greeting.avatar:
+            self.response.headers['Content-Type'] = 'image/png'
+            self.response.out.write(greeting.avatar)
+        else:
+            self.response.out.write('No image')
+
 class RSS(webapp2.RequestHandler):
 	def get(self):
 		self.posts = Question.all().order('-create_time')
@@ -410,6 +424,17 @@ class RSS(webapp2.RequestHandler):
 		self.users = users
 		self.response.headers['Content-Type'] = 'application/rss+xml'
 		self.response.write(render_str('rss.html', p=self))
+
+class questionRSS(webapp2.RequestHandler):
+	def get(self, question_id):
+		self.question = Question.get_by_id(int(question_id))
+		self.posts = Answer.all().order('-create_time')
+		self.posts = self.posts.filter('question_id', question_id)
+		self.user = users.get_current_user()
+		self.time = datetime.datetime.now(EST())
+		self.users = users
+		self.response.headers['Content-Type'] = 'application/rss+xml'
+		self.response.write(render_str('questionrss.html', p=self))
 		
 
 app = webapp2.WSGIApplication([
@@ -427,6 +452,8 @@ app = webapp2.WSGIApplication([
 	('/([0-9]+)/edit', QuestionEdit),
 	('/([0-9]+)/([0-9]+)/edit', AnswerEdit),
 	('/img', Image),
+	('/ansimg', AnswerImage),
 	('/rss', RSS),
+	('/([0-9]+)/rss',questionRSS),
 
 ], debug=True)

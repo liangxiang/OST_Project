@@ -13,10 +13,11 @@
             {% endif %}
                 <div class="text-left" style="padding: 15px;max-width: 600px;"> 
                     What is your question?
-                    <br><textarea name="body" class="form-control" required autofocus rows="20">{{p.body_str}}</textarea><br>
+                    <br><input type=text name="title" class="form-control" value="{{p.title}}" required autofocus placeholder="Title"></input>
+                    <br><textarea name="body" class="form-control" required rows="20" placeholder="Detailed about question">{{p.body_str}}</textarea><br>
                     
                     Tags: (separated by space)
-                    <br><input type=text name="tags" class="form-control" value="{{' '.join(p.tags)}}"></textarea><br>
+                    <br><input type=text name="tags" class="form-control" value="{{' '.join(p.tags)}}" placeholder="Tags"></input><br>
 
                     Upload Image:
                     <br><input type="file" name="img" class="form-control"/><br>

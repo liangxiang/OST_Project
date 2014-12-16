@@ -17,11 +17,11 @@
                     {% endif %}
                 </div>
                 <div class="col-md-11 blog-post"> 
-                    <p><b>
+                    <p>
+                        <b>{{p.question.title}}</b><br>
                         {% autoescape true %} 
                         {{ p.question.render_text | safe }}                        
                         {% endautoescape %}
-                    </b>
                         {% if p.question.avatar %}
                         <div class="photo">
                         <img src="/img?img_id={{ p.question.key() }}"></img>
@@ -37,7 +37,7 @@
                         {% endif %}
                     </p>
                     <p class="blog-post-meta">
-                        Created at {{p.question.create_time.strftime('%I:%M %p, %b %d, %Y')}} by <a href="/{{p.question.user.nickname()}}"> {{p.question.user.nickname()}} </a>
+                        Created at {{p.question.create_time.strftime('%I:%M %p, %b %d, %Y')}} by <a href="/index?user={{p.question.user}}"> {{p.question.user.nickname()}} </a>
                         {% if p.question.has_modified %}
                         Last modified at {{p.question.last_modified.strftime('%I:%M %p, %b %d, %Y')}}
                         {% endif %}
@@ -63,6 +63,11 @@
                         {% autoescape true %} 
                         {{ post.render_text | safe }}                        
                         {% endautoescape %} 
+                        {% if post.avatar %}
+                        <div class="photo">
+                        <img src="/ansimg?img_id={{ post.key() }}"></img>
+                        </div>
+                        {% endif %}
                         <br>
                         {% if post.is_editable %}
                         <a href="/{{p.question_id}}/{{post.key().id()}}/edit"><button type="button" class="btn btn-sm btn-primary">Edit</button></a>

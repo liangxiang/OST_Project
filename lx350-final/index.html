@@ -33,8 +33,8 @@
                     {% endif %}
                 </div>
                 <div class="col-md-11 blog-post"> 
-
-                    <p>            
+                    <p>  
+                        <a href="/{{post.key().id()}}" style="color:black"><b>{{post.title}}</b></a><br>          
                         {% autoescape true %} 
                         {{ post.render_text | safe }}                        
                         {% endautoescape %}
@@ -48,7 +48,7 @@
                             <a href="/index?tag={{tag}}" class="post-tag">{{tag}}</a>
                         {% endfor %}
                         <br>
-                        <a href="/{{post.key().id()}}" class="moreandedit">More</a>
+                        <a href="/{{post.key().id()}}" class="moreandedit">View Question</a>
                         {% if post.is_editable %}
                         <a href="/{{post.key().id()}}/edit" class="moreandedit">Edit</a>
                         {% endif %}

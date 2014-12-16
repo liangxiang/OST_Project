@@ -7,13 +7,16 @@
         <div class="blog-post"> 
             <h2 class="blog-post-title">Create a new answer</h2>
             {% if not p.key %}
-              <form action="/{{p.parent}}/answerpost" role="form" method="post" style="padding: 15px;min-width: 250px;" >
+              <form action="/{{p.parent}}/answerpost" enctype="multipart/form-data" method="post" style="padding: 15px;min-width: 250px;" >
             {% else %}
-              <form action="/{{p.parent}}/{{p.key().id()}}/answerpost" role="form" method="post" style="padding: 15px;min-width: 250px;" >
+              <form action="/{{p.parent}}/{{p.key().id()}}/answerpost"  enctype="multipart/form-data" method="post" style="padding: 15px;min-width: 250px;" >
             {% endif %}
                 <div class="text-left" style="padding: 15px;max-width: 600px;"> 
                     What is your answer?
                     <br><textarea name="body" class="form-control" required autofocus rows="20">{{p.body_str}}</textarea><br>
+
+                    Upload Image:
+                    <br><input type="file" name="img" class="form-control"/><br>
 
                     <button class="btn btn-success" type="submit">Submit</button>
                 </div>

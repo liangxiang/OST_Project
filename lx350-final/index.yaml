@@ -16,6 +16,12 @@ indexes:
   - name: answervote
     direction: desc
 
+- kind: Answer
+  properties:
+  - name: question_id
+  - name: create_time
+    direction: desc
+
 - kind: AnswerVote
   properties:
   - name: answer_id
