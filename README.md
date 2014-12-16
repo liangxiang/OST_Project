@@ -1,8 +1,8 @@
 This is the final project of OST 2014 implemented in Python
 ---
 
-####[blog System URL](http://lx350-final.appspot.com/)
-This blog system is built by Jinjia, Google App Engine and Bootstrap, and is deployed on Google App Engine. 
+####[Question System URL](http://lx350-final.appspot.com/)
+This Question system is built by Jinjia, Google App Engine and Bootstrap, and is deployed on Google App Engine. 
 
 All required features are implemented. Plus, I implement "smarter" sorting of questions, that users could use to sort by "create time", "modified time", "votes" and "answers".
 
@@ -10,7 +10,7 @@ All required features are implemented. Plus, I implement "smarter" sorting of qu
 * **tags** - Users could define tags. Each post might has a number of tags and click a tag can view all posts marked by that tag. 
 * **pagenation** - every page has 'next' and 'previous' links to other pages, and each page has no more than 10 posts. 
 * **uploads** - user can upload images locally and image with an URL could be shown inline.
-* **RSS** - each question has RSS link, that dumps a entire blog in XML format.
+* **RSS** - each question has RSS link, that dumps a entire Question in XML format.
 * **votes** - A logged in user could vote up or down. User without login could just view question/answer but not vote. 
 * **timestamp** - Questions and answers are stored along with a timestamp hen created or modified. 
 * **default view** - each question will display content capped at 500 characters. 
@@ -67,5 +67,5 @@ Classes
 
 Further posibly improvement:
 ---
-* Delete function is missing, you cannot delete a post or a blog.
+* Delete function is missing, you cannot delete a post or a Question.
 * Uploaded images should be managed. You cannot delete any uploaded things.
