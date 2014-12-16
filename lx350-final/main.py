@@ -422,7 +422,7 @@ class RSS(webapp2.RequestHandler):
 		self.user = users.get_current_user()
 		self.time = datetime.datetime.now(EST())
 		self.users = users
-		self.response.headers['Content-Type'] = 'application/rss+xml'
+		self.response.headers['Content-Type'] = "text/xml; charset=utf-8"
 		self.response.write(render_str('rss.html', p=self))
 
 class questionRSS(webapp2.RequestHandler):
@@ -433,7 +433,7 @@ class questionRSS(webapp2.RequestHandler):
 		self.user = users.get_current_user()
 		self.time = datetime.datetime.now(EST())
 		self.users = users
-		self.response.headers['Content-Type'] = 'application/rss+xml'
+		self.response.headers['Content-Type'] = "text/xml; charset=utf-8"
 		self.response.write(render_str('questionrss.html', p=self))
 		
 
