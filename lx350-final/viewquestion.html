@@ -32,8 +32,9 @@
                         <a href="/index?tag={{tag}}" class="post-tag">{{tag}}</a>
                         {% endfor %}                    
                         <br>
+                        <a href="/{{p.question.key().id()}}/rss" class="moreandedit" style="float:right">RSS</a>
                         {% if p.question.is_editable %}
-                        <a href="/{{p.question.key().id()}}/edit"><button type="button" class="btn btn-sm btn-primary">Edit</button></a>
+                        <a href="/{{p.question.key().id()}}/edit" class="moreandedit" style="float:right">Edit</a>
                         {% endif %}
                     </p>
                     <p class="blog-post-meta">
